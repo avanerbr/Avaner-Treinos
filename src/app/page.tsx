@@ -2,7 +2,6 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import Navbar from '@/components/Navbar'
 import Link from 'next/link'
-import { Dumbbell, Calendar, History } from 'lucide-react'
 
 export default async function HomePage() {
   const cookieStore = await cookies()
@@ -11,7 +10,6 @@ export default async function HomePage() {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     { cookies: { getAll() { return cookieStore.getAll() }, setAll() {} } }
   )
-  const { data: { user } } = await supabase.auth.getUser()
   const today = new Date()
   const cards = [
     { href: '/treino', label: 'Iniciar Treino', icon: '🏋️', desc: 'Registrar sessão de hoje' },
@@ -24,7 +22,9 @@ export default async function HomePage() {
       <div className="max-w-2xl mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-white">Bom treino! 💪</h1>
-          <p className="text-gray-400 mt-1">{today.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+          <p className="text-gray-400 mt-1">
+            {today.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
+          </p>
         </div>
         <div className="grid grid-cols-1 gap-3">
           {cards.map(({ href, label, icon, desc }) => (
